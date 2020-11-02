@@ -6,6 +6,7 @@ Created on Thu Oct 29 12:59:27 2020
 """
 #Importing the libraries
 import pandas as pd
+import re
 
 
 df = pd.read_csv('naukri_jobs.csv')
@@ -54,8 +55,35 @@ df['max_experience'] = Experience_Required.apply(lambda x: int(x.split('-')[1]))
 #parsing Job description
 #df['Key Skills'] = df['Key Skills'].astype(str)
 #df['python_yn'] = df['Key Skills'].apply(lambda x: 1 if 'python' in x.lower() else 0)
-#print(df.python_yn.value_counts())
+#print(df.Role.value_counts())
 
+#parsing Location
+df['Location'] = df['Location'].apply(lambda x: x.replace('(', ','))
+df['Location'] = df['Location'].apply(lambda x: x.split(',')[0])
+#print(df.Location.value_counts()) 
+
+df['Key Skills'] = df['Key Skills'].astype(str)
+df['Key Skills'] = df['Key Skills'].apply(lambda x: x.replace('|', '').replace('.', '').replace('#', '').replace('nan', 'empty'))
+print(df['Key Skills'].dtype)
+
+#letters_only = re.sub('[^a-zA-Z]',' ', str(location))
+
+def Clean_skills(Skill_name): 
+    # Search for opening bracket in the name followed by 
+    # any characters repeated any number of times 
+    if re.search('\(.*', Skill_name): 
+  
+        # Extract the position of beginning of pattern 
+        pos = re.search('\(.*', Skill_name).start() 
+  
+        # return the cleaned name 
+        return Skill_name[:pos] 
+  
+    else: 
+        # if clean up needed return the same name 
+        return Skill_name 
+    
+df['Key Skills'] = df['Key Skills'].apply(Clean_skills)
 df.to_csv('Naukri_cleaned.csv')
 
 
