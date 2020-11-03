@@ -34,7 +34,9 @@ salary = df['Job Salary'].apply(lambda x: x.split('p')[0])
 minus_comma = salary.apply(lambda x: x.replace(',', ''))
 
 df['min_salary'] = minus_comma.apply(lambda x: int(x.split('-')[0]))
+df['min_salary'] = df['min_salary']/10000
 df['max_salary'] = minus_comma.apply(lambda x: int(x.split('-')[1]))
+df['max_salary'] = df['max_salary']/10000
 df['avg_salary'] = (df['min_salary'] + df['max_salary'])/2
 df['avg_salary'] = df['avg_salary'].astype('int64')
 print(df['max_salary'].dtype)
@@ -62,6 +64,20 @@ df['Location'] = df['Location'].apply(lambda x: x.replace('(', ','))
 df['Location'] = df['Location'].apply(lambda x: x.split(',')[0])
 #print(df.Location.value_counts()) 
 
+#parsing Functional Area
+df['Functional Area'] = df['Functional Area'].apply(lambda x: x.replace('-', ',').replace('/', ','))
+df['Functional Area'] = df['Functional Area'].apply(lambda x: x.split(',')[0])
+
+#parsing Industry
+df['Industry'] = df['Industry'].apply(lambda x: x.replace('-', ',').replace('/', ','))
+df['Industry'] = df['Industry'].apply(lambda x: x.split(',')[0])
+
+#parsing Role Category
+df['Role Category'] = df['Role Category'].astype(str)
+df['Role Category'] = df['Role Category'].apply(lambda x: x.replace('-', ',').replace('/', ','))
+df['Role Category'] = df['Role Category'].apply(lambda x: x.split(',')[0])
+
+#parsing Key Skills
 df['Key Skills'] = df['Key Skills'].astype(str)
 df['Key Skills'] = df['Key Skills'].apply(lambda x: x.replace('|', '').replace('.', '').replace('#', '').replace('nan', 'empty'))
 print(df['Key Skills'].dtype)
@@ -84,7 +100,7 @@ def Clean_skills(Skill_name):
         return Skill_name 
     
 df['Key Skills'] = df['Key Skills'].apply(Clean_skills)
-df.to_csv('Naukri_cleaned.csv')
+df.to_csv('Naukri_cleaned.csv', index= False)
 
 
 
