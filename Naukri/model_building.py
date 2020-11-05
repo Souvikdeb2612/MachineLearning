@@ -66,8 +66,8 @@ np.mean(cross_val_score(rf, X_train, y_train,scoring = 'neg_mean_absolute_error'
 
 #Grid Search
 from sklearn.model_selection import GridSearchCV
-parameters = {'n_estimators':range(10,300,10), 'criterion':('mse','mae'), 'max_features':('auto','sqrt')}
-gs = GridSearchCV(rf, parameters, scoring = 'neg_mean_absolute_error', cv =5, verbose= 10)
+parameters = {'n_estimators':range(10,300,10), 'max_features':('auto','sqrt')}
+gs = GridSearchCV(rf, parameters, scoring = 'neg_mean_absolute_error', cv =5, verbose= 20)
 gs.fit(X_train, y_train)
 
 gs.best_score_
@@ -83,7 +83,23 @@ mean_absolute_error(y_test,tpred_lm)
 mean_absolute_error(y_test,tpred_lml)
 mean_absolute_error(y_test,tpred_rf)
 
-mean_absolute_error(y_test,(tpred_lm+tpred_rf)/2)
+mean_absolute_error(y_test,(tpred_lml+tpred_rf)/2)
+
+
+import pickle
+pickl = {'model': gs.best_estimator_}
+pickle.dump( pickl, open( 'model_file' + ".p", "wb" ) )
+
+file_name = "model_file.p"
+with open(file_name, 'rb') as pickled:
+    data = pickle.load(pickled)
+    model = data['model']
+
+model.predict(np.array(list(X_test.iloc[1,:])).reshape(1,-1))[0]
+
+list(X_test.iloc[1,:])
+
+
 
 
 
