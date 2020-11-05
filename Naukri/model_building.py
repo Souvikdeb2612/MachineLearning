@@ -66,7 +66,7 @@ np.mean(cross_val_score(rf, X_train, y_train,scoring = 'neg_mean_absolute_error'
 
 #Grid Search
 from sklearn.model_selection import GridSearchCV
-parameters = {'n_estimators':range(10,300,10), 'max_features':('auto','sqrt')}
+parameters = {'n_estimators':range(10,300,10),'criterion':('mse','mae'), 'max_features':('auto','sqrt')}
 gs = GridSearchCV(rf, parameters, scoring = 'neg_mean_absolute_error', cv =5, verbose= 20)
 gs.fit(X_train, y_train)
 
