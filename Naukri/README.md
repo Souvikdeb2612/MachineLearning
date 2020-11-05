@@ -31,4 +31,6 @@ Made separarte columns for minimum and maximum experience required.
 
 # EDA
 I looked at the distributions of the data and the value counts for the various categorical variables. Below are a few highlights from the pivot tables.
-![alt text](https://github.com/Souvikdeb2612/ML/Naukri/blob/master/image.png?raw=true)
+![alt text](https://github.com/Souvikdeb2612/ML/blob/master/Naukri/Locations.png?raw=true)
+![alt text](https://github.com/Souvikdeb2612/ML/blob/master/Naukri/Wordcloud.png?raw=true)
+
