@@ -14,6 +14,8 @@ df_nc = pd.read_excel (r'KPMG_VI_New_raw_data_update_final.xlsx', sheet_name='Ne
 df_cd = pd.read_excel (r'KPMG_VI_New_raw_data_update_final.xlsx', sheet_name='CustomerDemographic')
 df_ca = pd.read_excel (r'KPMG_VI_New_raw_data_update_final.xlsx', sheet_name='CustomerAddress')
 
+df_tr.Profit = df_tr.list_price - df_tr.standard_cost
+
 age = pd.to_datetime(df_nc.DOB)
 
 def from_dob_to_age(born):
@@ -30,18 +32,17 @@ age = age.apply(lambda x: from_dob_to_age(x))
 df_cd.insert(6, "Age", age, True)
     
 
-
+    
+bins= [0,10,20,30,40,50,60,70,80,90]
+labels = ['0-10','10-20','20-30','30-40','40-50','50-60','60-70','70-80','80+']  
+df_nc['AgeGroup'] = pd.cut(df_nc['Age'], bins=bins, labels=labels, right=False)
+df_cd['AgeGroup'] = pd.cut(df_cd['Age'], bins=bins, labels=labels, right=False)
 
 with pd.ExcelWriter('Updated_dataset.xlsx') as writer:
     df_tr.to_excel(writer, sheet_name='Transactions')
     df_nc.to_excel(writer, sheet_name='NewCustomerList')
     df_cd.to_excel(writer, sheet_name='CustomerDemographic')
     df_ca.to_excel(writer, sheet_name='CustomerAddress')
-    
-bins= [0,20,40,60,80,100]
-labels = ['0-20','20-40','40-60','60-80','80+']  
-df_nc['AgeGroup'] = pd.cut(df_nc['Age'], bins=bins, labels=labels, right=False)
-df_cd['AgeGroup'] = pd.cut(df_nc['Age'], bins=bins, labels=labels, right=False)
 
 
 
